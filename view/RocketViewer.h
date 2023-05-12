@@ -28,6 +28,8 @@ class RocketViewer
          * @brief Draws the Rocket using OpenGL
          */
         void draw(){
+          QuadViewer laserBeamViewer(rocket_.getLaserBeam());
+          laserBeamViewer.draw();
           TriangleViewer coneView(rocket_.getCone());
           coneView.draw();
           QuadViewer bodyView(rocket_.getBody());

@@ -15,6 +15,7 @@ class Rocket
         Triangle cone_;
         Quad body_;
         Quad nozzle_;
+        Quad laserbeam_;
 
     public:
         /**
@@ -38,6 +39,15 @@ class Rocket
             make_pair(6,15),make_pair(14,15),make_pair(10,20)
             };
             this->cone_.setVertices(coneVertices);
+
+            vector <pair<float,float>> beamVertices = {
+            make_pair(9, 17), make_pair(11, 17), make_pair(11,99), make_pair(9,99)
+            };
+            this->laserbeam_.setVertices(beamVertices);
+            unordered_map <char,float> laserColor = {
+                {'r',1}, {'g',0}, {'b',0}
+            };
+            this->laserbeam_.setColor(laserColor);
 
         }
         /**
@@ -70,6 +80,13 @@ class Rocket
         Quad getNozzle(){
             return this->nozzle_;
         }
+        /**
+            * @brief Gets the laser beam of the rocket.
+            * @return The beam of the rocket.
+        */
+        Quad getLaserBeam(){
+            return this->laserbeam_;
+        }
 
         /**
             * @brief Sets the cone of the rocket.
@@ -78,16 +95,20 @@ class Rocket
         void setCone(Triangle &cone){
             this->cone_=cone;
         }
+
         /**
             * @brief Moves the rocket by the specified amount in the x and y directions.
             * @param x The amount to move the rocket in the x direction.
             * @param y The amount to move the rocket in the y direction.
         */
+
         void moveRocket(float x, float y){
             float rectBottomLeftXNozzleBottomLeftX =  body_.getVertices()[0].first -  nozzle_.getVertices()[0].first;
             float coneBottomLeftXNozzleBottomLeftX = cone_.getVertices()[0].first - nozzle_.getVertices()[0].first;
+            float laserBottomLeftXNozzleBottomLeftX = laserbeam_.getVertices()[0].first - nozzle_.getVertices()[0].first;
             this->cone_.moveShape(x + coneBottomLeftXNozzleBottomLeftX, y + this->cone_.getVertices()[0].second - this->nozzle_.getVertices()[0].second);
             this->body_.moveShape(x+rectBottomLeftXNozzleBottomLeftX, y + this->body_.getVertices()[0].second - this->nozzle_.getVertices()[0].second);
+            this->laserbeam_.moveShape(x+laserBottomLeftXNozzleBottomLeftX, y+ this->laserbeam_.getVertices()[0].second - this->nozzle_.getVertices()[0].second);
             this->nozzle_.moveShape(x, y);
         }
 
