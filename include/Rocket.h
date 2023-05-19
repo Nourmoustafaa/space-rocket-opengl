@@ -24,13 +24,13 @@ class Rocket
         Rocket(){
             ///Initializes nozzle vertices
             vector<pair<float,float>> nozzleVertices = {
-            make_pair(-2,6), make_pair(7,6), make_pair(2.5,13)
+            make_pair(-2,3.5), make_pair(7,3.5), make_pair(2.5,10)
             };
             this->nozzle_.setVertices(nozzleVertices);
 
             ///Initializes body vertices
             vector<pair<float,float>> bodyVertices = {
-            make_pair(0,5),make_pair(5,5),make_pair(5,10),make_pair(0,10)
+            make_pair(0,3),make_pair(5,3),make_pair(5,10),make_pair(0,10)
             };
             this->body_.setVertices(bodyVertices);
 
@@ -41,7 +41,7 @@ class Rocket
             this->cone_.setVertices(coneVertices);
 
             vector <pair<float,float>> beamVertices = {
-            make_pair(0, 10), make_pair(5, 10), make_pair(5,100), make_pair(0,100)
+            make_pair(1, 10), make_pair(4, 10), make_pair(4,100), make_pair(1,100)
             };
             this->laserbeam_.setVertices(beamVertices);
             unordered_map <char,float> laserColor = {

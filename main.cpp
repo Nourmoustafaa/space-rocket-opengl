@@ -28,6 +28,7 @@
 #include "view/CircleViewer.h"
 #include <random>
 #include <unordered_set>
+#include <cstdlib>
 using namespace std;
 int phyWidth= 1000;
 int phyHeight= 1000;
@@ -40,38 +41,40 @@ float mouseY;
 Triangle cone;
 TriangleViewer coneView(cone);
 Rocket rocket;
+Circle asteroid;
+CircleViewer asteroidViewer(asteroid);
 RocketViewer rocketViewer;
-std::unordered_set<int> generatedCoordinates;
-int generateUniqueRandomCoordinates(float &x) {
-   default_random_engine generator;
-   uniform_int_distribution <int> distribution(20,90);
-   x = distribution(generator);
-   cout<<"randomX"<<x<<endl;
-   return x;
-}
- void drawCircle(float cx, float cy, float radius, int segments) {
-     glColor3f(.1,.3,.4);
-        glBegin(GL_POLYGON);
-        for (int i = 0; i < segments; i++) {
-            float theta = 2.0f * 3.1415926f * float(i) / float(segments);
-            float x = radius * cosf(theta);
-            float y = radius * sinf(theta);
-            glVertex2f(x + cx, y + cy);
-        }
-        glEnd();
-}
+float rRandom = asteroid.getColor()['r'];
+float gRandom = asteroid.getColor()['g'];
+float bRandom = asteroid.getColor()['b'];
 void Timer(int value){
-    glutTimerFunc(30, Timer, value);
-glutPostRedisplay();
+    glutTimerFunc(15, Timer, value);
+    glutPostRedisplay();
+}
+double generateRandomZeroToOne() {
+    return static_cast<double>(std::rand()) / RAND_MAX;
 }
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
     rocketViewer.draw();
-    drawCircle(randX, limit, 5, 100);
+    // drawCircle(randX, limit, 5, 100);
+    vector<pair<float,float>> center = {make_pair(randX,limit)};
+    asteroid.setVertices(center);
+    unordered_map <char, float> color = {
+        {'r', rRandom},{'g', gRandom},{'b', bRandom}
+    };
+    asteroid.setColor(color);
+    // cout<<asteroid.getColor()['r'];
+    asteroidViewer.setCircle(asteroid);
+    asteroidViewer.draw();
     --limit;
     if(limit <=-6){
         limit = 110;
         randX = 20 + rand()%90;
+        rRandom = generateRandomZeroToOne();
+        gRandom = generateRandomZeroToOne();
+        bRandom = generateRandomZeroToOne();
+        cout<<"Colors"<<rRandom<<" "<<gRandom<<" "<<bRandom<<endl;
     }
     cout<<"randomX is"<<randX;
     int x,y;
@@ -83,14 +86,10 @@ void keyboardHandler(unsigned char key, int x, int y){
 
 void mouseHandler(int x, int y){
     mouseX = x;
-    cout<<"x is"<<x;
     mouseX=0.5+1.0*mouseX*logWidth/phyWidth;
     mouseY = phyHeight - y;
     mouseY=0.5+1.0*mouseY*logHeight/phyHeight;
-    cout<<"x: "<<mouseX<<endl;
-    cout<<mouseY<<endl;
     rocketViewer.moveRocket(mouseX, mouseY);
-    cout<<rocketViewer.getRocket().getBody().getVertices()[0].first<<endl;
     glutPostRedisplay();
 }
 
