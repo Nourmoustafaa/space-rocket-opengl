@@ -28,14 +28,14 @@ class RocketViewer
          * @brief Draws the Rocket using OpenGL
          */
         void draw(){
+          TriangleViewer nozzleViewer(rocket_.getNozzle());
+          nozzleViewer.draw();
           QuadViewer laserBeamViewer(rocket_.getLaserBeam());
           laserBeamViewer.draw();
           TriangleViewer coneView(rocket_.getCone());
           coneView.draw();
           QuadViewer bodyView(rocket_.getBody());
           bodyView.draw();
-          QuadViewer nozzleViewer(rocket_.getNozzle());
-          nozzleViewer.draw();
         }
         void moveRocket(float x, float y){
             this->rocket_.moveRocket(x, y);

@@ -34,13 +34,11 @@ float mouseX;
 float mouseY;
 Triangle cone;
 TriangleViewer coneView(cone);
-Quad nozzle;
 Rocket rocket;
 RocketViewer rocketViewer;
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
     rocketViewer.draw();
-
     glutSwapBuffers();
 }
 void keyboardHandler(unsigned char key, int x, int y){
