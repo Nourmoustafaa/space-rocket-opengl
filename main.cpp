@@ -25,22 +25,54 @@
 #include "Rocket.h"
 #include "view/TriangleViewer.h"
 #include "view/RocketViewer.h"
+#include "view/CircleViewer.h"
+#include <random>
+#include <unordered_set>
+#include <cstdlib>
 using namespace std;
 int phyWidth= 1000;
 int phyHeight= 1000;
 int logWidth=100;
 int logHeight=100;
+int limit = 110;
 float mouseX;
+float randX=20;
 float mouseY;
-Triangle cone;
-TriangleViewer coneView(cone);
-Quad nozzle;
 Rocket rocket;
+Circle asteroid;
+CircleViewer asteroidViewer(asteroid);
 RocketViewer rocketViewer;
+float rRandom = asteroid.getColor()['r'];
+float gRandom = asteroid.getColor()['g'];
+float bRandom = asteroid.getColor()['b'];
+void Timer(int value){
+    glutTimerFunc(15, Timer, value);
+    glutPostRedisplay();
+}
+double generateRandomZeroToOne() {
+    return static_cast<double>(std::rand()) / RAND_MAX;
+}
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
     rocketViewer.draw();
-
+    // drawCircle(randX, limit, 5, 100);
+    vector<pair<float,float>> center = {make_pair(randX,limit)};
+    asteroid.setVertices(center);
+    unordered_map <char, float> color = {
+        {'r', rRandom},{'g', gRandom},{'b', bRandom}
+    };
+    asteroid.setColor(color);
+    // cout<<asteroid.getColor()['r'];
+    asteroidViewer.setCircle(asteroid);
+    asteroidViewer.draw();
+    --limit;
+    if(limit <=-6){
+        limit = 110;
+        randX = 20 + rand()%90;
+        rRandom = generateRandomZeroToOne();
+        gRandom = generateRandomZeroToOne();
+        bRandom = generateRandomZeroToOne();
+    }
     glutSwapBuffers();
 }
 void keyboardHandler(unsigned char key, int x, int y){
@@ -49,17 +81,13 @@ void keyboardHandler(unsigned char key, int x, int y){
 
 void mouseHandler(int x, int y){
     mouseX = x;
-    cout<<"x is"<<x;
     mouseX=0.5+1.0*mouseX*logWidth/phyWidth;
     mouseY = phyHeight - y;
     mouseY=0.5+1.0*mouseY*logHeight/phyHeight;
-    cout<<"x: "<<mouseX<<endl;
-    cout<<mouseY<<endl;
     rocketViewer.moveRocket(mouseX, mouseY);
-        cout<<"fff:";
-    cout<<rocketViewer.getRocket().getBody().getVertices()[0].first<<endl;
     glutPostRedisplay();
 }
+
 
 void init()
 {
@@ -78,7 +106,7 @@ int main(int argc, char *argv[])
     glutDisplayFunc(display);
     glutKeyboardFunc(keyboardHandler);
     glutPassiveMotionFunc(mouseHandler);
+    Timer(0);
     glutMainLoop();
-
     return EXIT_SUCCESS;
 }
