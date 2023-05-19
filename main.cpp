@@ -38,8 +38,6 @@ int limit = 110;
 float mouseX;
 float randX=20;
 float mouseY;
-Triangle cone;
-TriangleViewer coneView(cone);
 Rocket rocket;
 Circle asteroid;
 CircleViewer asteroidViewer(asteroid);
@@ -74,10 +72,7 @@ void display(){
         rRandom = generateRandomZeroToOne();
         gRandom = generateRandomZeroToOne();
         bRandom = generateRandomZeroToOne();
-        cout<<"Colors"<<rRandom<<" "<<gRandom<<" "<<bRandom<<endl;
     }
-    cout<<"randomX is"<<randX;
-    int x,y;
     glutSwapBuffers();
 }
 void keyboardHandler(unsigned char key, int x, int y){
