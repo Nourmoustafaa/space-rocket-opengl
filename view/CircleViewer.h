@@ -15,11 +15,12 @@ private:
 
 public:
     CircleViewer() : circle_() {}
+    CircleViewer(Circle circle): circle_(circle){}
 
     void draw() override {
         float cx = this->circle_.getVertices()[0].first;
         float cy = this->circle_.getVertices()[0].second;
-        glBegin(GL_LINE_LOOP);
+        glBegin(GL_POLYGON);
         for (int i = 0; i < this->circle_.getSegments(); i++) {
             float theta = 2.0f * 3.1415926f * float(i) / float(this->circle_.getSegments());
             float x = this->circle_.getRadius() * cosf(theta);
