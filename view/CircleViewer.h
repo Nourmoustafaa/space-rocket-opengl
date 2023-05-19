@@ -25,8 +25,8 @@ public:
         glBegin(GL_POLYGON);
         for (int i = 0; i < 100; i++) {
             float theta = 2.0f * 3.1415926f * float(i) / float(100);
-            float x = 5 * cosf(theta);
-            float y = 5 * sinf(theta);
+            float x = 3 * cosf(theta);
+            float y = 3 * sinf(theta);
             glVertex2f(x + cx, y + cy);
         }
 

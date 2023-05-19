@@ -56,11 +56,26 @@ void Text(string str, int x, int y) {
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
     glFlush();
 }
+void generateRandomStars(int xRange,int yRange, int pointSize, int intensity) {
+         glColor3f(1, 1, 1);
+         default_random_engine generator;
+         uniform_int_distribution <int>distributionX(0, 100);
+         uniform_int_distribution <int>distributionY(0, 100);
+         glPointSize(pointSize); // Set the point size
+         for (int i = 0; i < intensity; i++) {
+             int randomX = distributionX(generator);
+             int randomY = distributionY(generator);
+             glBegin(GL_POINTS);
+             glVertex2f(randomX,randomY);
+             glEnd();
+         }
+}
 double generateRandomZeroToOne() {
     return static_cast<double>(std::rand()) / RAND_MAX;
 }
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
+    generateRandomStars(0,100,.5,100);
     Text("Score: ", 5, 90);
     rocketViewer.draw();
     // drawCircle(randX, limit, 5, 100);
