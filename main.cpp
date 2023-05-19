@@ -35,23 +35,19 @@ int logWidth=100;
 int logHeight=100;
 int limit = 110;
 float mouseX;
+float randX;
 float mouseY;
 Triangle cone;
 TriangleViewer coneView(cone);
 Rocket rocket;
 RocketViewer rocketViewer;
 std::unordered_set<int> generatedCoordinates;
-int generateUniqueRandomCoordinates() {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> distribution(7, 90);
-    int x;
-
-    do {
-        x = distribution(gen);
-    } while (generatedCoordinates.find(x) != generatedCoordinates.end());
-    cout<<"ramdomX: "<<x<<endl;
-    return x;
+int generateUniqueRandomCoordinates(float &x) {
+   default_random_engine generator;
+   uniform_int_distribution <int> distribution(20,90);
+   x = distribution(generator);
+   cout<<"randomX"<<x<<endl;
+   return x;
 }
  void drawCircle(float cx, float cy, float radius, int segments) {
      glColor3f(.1,.3,.4);
@@ -71,9 +67,11 @@ glutPostRedisplay();
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
     rocketViewer.draw();
-    if(generatedCoordinates.size()>0)
-    for (auto element : generatedCoordinates){
-        drawCircle(element, --limit,5,100);
+    drawCircle(randX,--limit,5,100);
+    cout<<"randomX is"<<randX;
+    if(limit <=-6){
+        limit = 110;
+        generateUniqueRandomCoordinates(randX);
     }
     int x,y;
     glutSwapBuffers();
@@ -105,10 +103,6 @@ gluOrtho2D( 0.0, logWidth, 0.0, logHeight);
 }
 int main(int argc, char *argv[])
 {
-    for (int i =0;i<5;i++){
-        int genX = generateUniqueRandomCoordinates();
-        generatedCoordinates.insert(genX);
-    }
     glutInit(&argc, argv);
     glutInitWindowSize(phyWidth,phyHeight);
     glutInitWindowPosition(10,10);
