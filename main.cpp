@@ -49,11 +49,19 @@ void Timer(int value){
     glutTimerFunc(15, Timer, value);
     glutPostRedisplay();
 }
+void Text(string str, int x, int y) {
+    glColor3f(1, 1, 1);
+    glRasterPos2d(x, y);
+    for (auto c : str)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
+    glFlush();
+}
 double generateRandomZeroToOne() {
     return static_cast<double>(std::rand()) / RAND_MAX;
 }
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
+    Text("Score: ", 5, 90);
     rocketViewer.draw();
     // drawCircle(randX, limit, 5, 100);
     vector<pair<float,float>> center = {make_pair(randX,limit)};
