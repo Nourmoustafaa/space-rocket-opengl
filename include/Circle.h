@@ -13,6 +13,10 @@ using namespace std;
         public:
             Circle(): Shape(), radius_(5), segments_(100){
                 vector<pair<float,float>> circleCenter = {make_pair(50,50)};
+                unordered_map<char,float> color = {
+                {'r',.4},{'g',.2},{'b',.7}
+                };
+                setColor(color);
                 setVertices(circleCenter);
             }
             Circle(vector<pair<float,float>> vertices, unordered_map<char,float> color, float radius, float segments): Shape(vertices, color), radius_(radius), segments_(segments){

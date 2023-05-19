@@ -14,7 +14,8 @@ class Rocket
     private:
         Triangle cone_;
         Quad body_;
-        Quad nozzle_;
+        Triangle nozzle_;
+        Quad laserbeam_;
 
     public:
         /**
@@ -23,21 +24,30 @@ class Rocket
         Rocket(){
             ///Initializes nozzle vertices
             vector<pair<float,float>> nozzleVertices = {
-            make_pair(5,5), make_pair(15,5), make_pair(12,10), make_pair(8,10)
+            make_pair(-2,3.5), make_pair(7,3.5), make_pair(2.5,10)
             };
             this->nozzle_.setVertices(nozzleVertices);
 
             ///Initializes body vertices
             vector<pair<float,float>> bodyVertices = {
-            make_pair(8,5),make_pair(12,5),make_pair(12,15),make_pair(8,15)
+            make_pair(0,3),make_pair(5,3),make_pair(5,10),make_pair(0,10)
             };
             this->body_.setVertices(bodyVertices);
 
             /// Initializes the cone vertices
             vector<pair<float,float>> coneVertices = {
-            make_pair(6,15),make_pair(14,15),make_pair(10,20)
+            make_pair(0,10),make_pair(5,10),make_pair(2.5,13)
             };
             this->cone_.setVertices(coneVertices);
+
+            vector <pair<float,float>> beamVertices = {
+            make_pair(1, 10), make_pair(4, 10), make_pair(4,100), make_pair(1,100)
+            };
+            this->laserbeam_.setVertices(beamVertices);
+            unordered_map <char,float> laserColor = {
+                {'r',1}, {'g',0}, {'b',0}
+            };
+            this->laserbeam_.setColor(laserColor);
 
         }
         /**
@@ -46,7 +56,7 @@ class Rocket
             * @param body The body of the rocket.
             * @param nozzle The nozzle of the rocket.
         */
-        Rocket(Triangle cone, Quad body, Quad nozzle) : cone_(cone), body_(body), nozzle_(nozzle){
+        Rocket(Triangle cone, Quad body, Triangle nozzle) : cone_(cone), body_(body), nozzle_(nozzle){
 
         }
         /**
@@ -67,8 +77,15 @@ class Rocket
             * @brief Gets the nozzle of the rocket.
             * @return The nozzle of the rocket.
         */
-        Quad getNozzle(){
+        Triangle getNozzle(){
             return this->nozzle_;
+        }
+        /**
+            * @brief Gets the laser beam of the rocket.
+            * @return The beam of the rocket.
+        */
+        Quad getLaserBeam(){
+            return this->laserbeam_;
         }
 
         /**
@@ -78,16 +95,17 @@ class Rocket
         void setCone(Triangle &cone){
             this->cone_=cone;
         }
+
         /**
             * @brief Moves the rocket by the specified amount in the x and y directions.
             * @param x The amount to move the rocket in the x direction.
             * @param y The amount to move the rocket in the y direction.
         */
+
         void moveRocket(float x, float y){
-            float rectBottomLeftXNozzleBottomLeftX =  body_.getVertices()[0].first -  nozzle_.getVertices()[0].first;
-            float coneBottomLeftXNozzleBottomLeftX = cone_.getVertices()[0].first - nozzle_.getVertices()[0].first;
-            this->cone_.moveShape(x + coneBottomLeftXNozzleBottomLeftX, y + this->cone_.getVertices()[0].second - this->nozzle_.getVertices()[0].second);
-            this->body_.moveShape(x+rectBottomLeftXNozzleBottomLeftX, y + this->body_.getVertices()[0].second - this->nozzle_.getVertices()[0].second);
+            this->cone_.moveShape(x,y);
+            this->body_.moveShape(x,y);
+            this->laserbeam_.moveShape(x,y);
             this->nozzle_.moveShape(x, y);
         }
 

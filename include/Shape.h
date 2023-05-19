@@ -13,6 +13,7 @@ class Shape
     private:
         std::vector<std::pair<float,float>> vertices_; /**< The vertices of the shape. */
         std::unordered_map<char,float> color_; /**< The color of the shape. */
+        std::vector<std::pair<float,float>> initValues_;
 
     public:
         /**
@@ -36,6 +37,7 @@ class Shape
          */
         Shape(std::vector<std::pair<float,float>> vertices, std::unordered_map<char,float> color){
             this->vertices_ = vertices;
+            this->initValues_ = vertices_;
             this->color_ = color;
         }
 
@@ -46,6 +48,7 @@ class Shape
          */
         void setVertices(std::vector<std::pair<float,float>> vertices){
             this->vertices_ = vertices;
+            this->initValues_ = this->vertices_;
         }
 
         /**
@@ -82,12 +85,14 @@ class Shape
          * @param y The vertical offset.
          */
         void moveShape(float newX, float newY) {
-            float changeX = newX - vertices_[0].first;
-            float changeY = newY - vertices_[0].second;
-            for (auto & vertix : vertices_){
-                    vertix.first  += changeX;
-                    vertix.second += changeY;
+            int i = 0;
+            for (auto & vertex : vertices_){
+                    vertex.first = newX + initValues_[i].first; // x coordinate = x-coordinate + mouseX
+                    vertex.second = newY + initValues_[i].second; // y coordinate = y-coordinate + mouseY
+                    std::cout<<vertex.first<<"+"<<newX<<"="<<vertex.first+newX<<std::endl;
+                    ++i;
             }
+
         }
 };
 
