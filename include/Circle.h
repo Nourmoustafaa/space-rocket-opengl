@@ -11,7 +11,7 @@ using namespace std;
             float radius_;
             float segments_;
         public:
-            Circle(): Shape(), radius_(5), segments_(100){
+            Circle(): Shape(), radius_(3), segments_(100){
                 vector<pair<float,float>> circleCenter = {make_pair(50,50)};
                 unordered_map<char,float> color = {
                 {'r',.4},{'g',.2},{'b',.7}
@@ -25,7 +25,7 @@ using namespace std;
         return this->segments_;
         }
         float getRadius(){
-        return this->getRadius();
+        return this->radius_;
         }
         void setSegments(float segments){
         this->segments_ = segments;
