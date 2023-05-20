@@ -90,8 +90,8 @@ void checkCollision(){
     float asteroidRightBound = asteroid.getVertices()[0].first+asteroid.getRadius();
     vector<pair<float,float>> laserBeamVertices = rocketViewer.getRocket().getLaserBeam().getVertices();
     // cout<<"laser: "<<rocketViewer.getRocket().getLaserBeam().getVertices()[0].first;
-
-    if(laserBeamVertices[0].first > asteroidLeftBound && laserBeamVertices[1].first < asteroidRightBound && !isCollided){
+    bool sameColor = rocketViewer.getLaserBeam().getColor()['r'] == asteroid.getColor()['r'];
+    if(laserBeamVertices[0].first > asteroidLeftBound && laserBeamVertices[1].first < asteroidRightBound && !isCollided && sameColor){
         //rocketViewer.changeBeamColor(asteroid.getColor());
         isCollided = true;
         score++;
