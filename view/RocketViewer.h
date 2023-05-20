@@ -23,6 +23,7 @@ class RocketViewer
          * @brief Default constructor for RocketViewer
          */
         RocketViewer(): rocket_(){}
+        RocketViewer(Rocket rocket): rocket_(rocket) {}
 
         /**
          * @brief Draws the Rocket using OpenGL
@@ -39,9 +40,14 @@ class RocketViewer
         }
         void moveRocket(float x, float y){
             this->rocket_.moveRocket(x, y);
+            cout<<"rocket viewer; "<<this->rocket_.getLaserBeam().getVertices()[0].first;
+
         }
         Rocket getRocket(){
             return this->rocket_;
+        }
+        Quad getLaserBeam(){
+            return this->rocket_.getLaserBeam();
         }
 
     protected:

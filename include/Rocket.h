@@ -106,6 +106,7 @@ class Rocket
             this->cone_.moveShape(x,y);
             this->body_.moveShape(x,y);
             this->laserbeam_.moveShape(x,y);
+            cout<<"laser beam is"<<this->laserbeam_.getVertices()[0].first;
             this->nozzle_.moveShape(x, y);
         }
 

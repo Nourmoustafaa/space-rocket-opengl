@@ -29,6 +29,8 @@
 #include <random>
 #include <unordered_set>
 #include <cstdlib>
+#include <string>
+#include <sstream>
 using namespace std;
 int phyWidth= 1000;
 int phyHeight= 1000;
@@ -37,11 +39,13 @@ int logHeight=100;
 int limit = 110;
 float mouseX;
 float randX=20;
+int score = 0;
+bool isCollided = false;
 float mouseY;
 Rocket rocket;
 Circle asteroid;
 CircleViewer asteroidViewer(asteroid);
-RocketViewer rocketViewer;
+RocketViewer rocketViewer(rocket);
 float rRandom = asteroid.getColor()['r'];
 float gRandom = asteroid.getColor()['g'];
 float bRandom = asteroid.getColor()['b'];
@@ -74,15 +78,25 @@ double generateRandomZeroToOne() {
     return static_cast<double>(std::rand()) / RAND_MAX;
 }
 void checkCollision(){
-    //float asteroidLeftBound = asteroid.getVertices()[0].first-asteroid.getRadius();
-    //float asteroidRightBound = asteroid.getVertices()[0].first+asteroid.getRadius();
-    //cout<<"lEFT BOUND"<<asteroidLeftBound<<"right bound"<<asteroidRightBound;
-    cout<<asteroid.getRadius();
+    float asteroidLeftBound = asteroid.getVertices()[0].first-asteroid.getRadius();
+    float asteroidRightBound = asteroid.getVertices()[0].first+asteroid.getRadius();
+    vector<pair<float,float>> laserBeamVertices = rocketViewer.getRocket().getLaserBeam().getVertices();
+    // cout<<"laser: "<<rocketViewer.getRocket().getLaserBeam().getVertices()[0].first;
+
+    if(laserBeamVertices[0].first > asteroidLeftBound && laserBeamVertices[1].first < asteroidRightBound && !isCollided){
+        cout<<"Collision!";
+        isCollided = true;
+        score++;
+    }
 }
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
     generateRandomStars(0,100,.5,100);
-    Text("Score: ", 5, 90);
+    stringstream ss;
+    ss<<score;
+    string s;
+    ss>>s;
+    Text("Score: " +s, 5, 90);
     rocketViewer.draw();
     // drawCircle(randX, limit, 5, 100);
     vector<pair<float,float>> center = {make_pair(randX,limit)};
@@ -104,6 +118,7 @@ void display(){
         rRandom = generateRandomZeroToOne();
         gRandom = generateRandomZeroToOne();
         bRandom = generateRandomZeroToOne();
+        isCollided = false;
     }
     glutSwapBuffers();
 }
