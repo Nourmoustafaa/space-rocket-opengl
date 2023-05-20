@@ -199,7 +199,9 @@ void checkCollision() {
     float asteroidLeftBound = asteroid.getVertices()[0].first - asteroid.getRadius();
     float asteroidRightBound = asteroid.getVertices()[0].first + asteroid.getRadius();
     vector<pair<float, float>> laserBeamVertices = rocketViewer.getRocket().getLaserBeam().getVertices();
-    bool sameColor = rocketViewer.getRocket().getLaserBeam().getColor()['r'] == asteroid.getColor()['r'];
+    bool sameColor = ( rocketViewer.getRocket().getLaserBeam().getColor()['r'] == asteroid.getColor()['r'] )
+    && ( rocketViewer.getRocket().getLaserBeam().getColor()['g'] == asteroid.getColor()['g']
+    && ( rocketViewer.getRocket().getLaserBeam().getColor()['b'] == asteroid.getColor()['b'] ));
     if (laserBeamVertices[0].first > asteroidLeftBound && laserBeamVertices[1].first < asteroidRightBound && !isCollided && sameColor) {
         isCollided = true;
         score++;

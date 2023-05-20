@@ -1,11 +1,13 @@
 # depslib dependency file v1.0
 32 
 
-1684628624 source:c:\users\sarah\desktop\spacerocket\main.cpp
-	<GLUT/glut.h>
+1684629825 source:c:\users\sarah\desktop\spacerocket\main.cpp
 	<GL/glut.h>
 	<iostream>
-	<stdlib.h>
+	<random>
+	<unordered_map>
+	<string>
+	<sstream>
 	"Triangle.h"
 	"Circle.h"
 	"Quad.h"
@@ -13,11 +15,6 @@
 	"view/TriangleViewer.h"
 	"view/RocketViewer.h"
 	"view/CircleViewer.h"
-	<random>
-	<unordered_set>
-	<cstdlib>
-	<string>
-	<sstream>
 
 1684533095 b9b06bd9b3bd507a8d7462800377cfa590b6d
 	<GLUT/glut.h>
