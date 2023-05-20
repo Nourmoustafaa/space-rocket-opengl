@@ -73,6 +73,12 @@ void generateRandomStars(int xRange,int yRange, int pointSize, int intensity) {
 double generateRandomZeroToOne() {
     return static_cast<double>(std::rand()) / RAND_MAX;
 }
+void checkCollision(){
+    //float asteroidLeftBound = asteroid.getVertices()[0].first-asteroid.getRadius();
+    //float asteroidRightBound = asteroid.getVertices()[0].first+asteroid.getRadius();
+    //cout<<"lEFT BOUND"<<asteroidLeftBound<<"right bound"<<asteroidRightBound;
+    cout<<asteroid.getRadius();
+}
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
     generateRandomStars(0,100,.5,100);
@@ -81,10 +87,13 @@ void display(){
     // drawCircle(randX, limit, 5, 100);
     vector<pair<float,float>> center = {make_pair(randX,limit)};
     asteroid.setVertices(center);
+    checkCollision();
     unordered_map <char, float> color = {
         {'r', rRandom},{'g', gRandom},{'b', bRandom}
     };
+
     asteroid.setColor(color);
+    checkCollision();
     // cout<<asteroid.getColor()['r'];
     asteroidViewer.setCircle(asteroid);
     asteroidViewer.draw();
