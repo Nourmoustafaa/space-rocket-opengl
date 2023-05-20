@@ -49,11 +49,13 @@ RocketViewer rocketViewer(rocket);
 float rRandom = asteroid.getColor()['r'];
 float gRandom = asteroid.getColor()['g'];
 float bRandom = asteroid.getColor()['b'];
+int currentRandomAsteroidColorChanel = 0;
 vector <float> currentLaserBeamColor = {
     rocket.getLaserBeam().getColor()['r'],
     rocket.getLaserBeam().getColor()['g'],
     rocket.getLaserBeam().getColor()['b']
 };
+vector <float> currentAsteroidRandomColor = {1, 0, 0};
 int currentIndex = 0;
 void Timer(int value){
     glutTimerFunc(50, Timer, value);
@@ -95,6 +97,15 @@ void checkCollision(){
         score++;
     }
 }
+vector <float> randomRGB(){
+         static default_random_engine generator;
+         static uniform_int_distribution <int>distribution(0, 2);
+         int randomChannelIndex = distribution(generator);
+         cout<<"Chosen index: "<<randomChannelIndex;
+         vector<float> color(3,0);
+         color[randomChannelIndex] = 1;
+        return color;
+}
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
     generateRandomStars(0,100,.5,100);
@@ -111,8 +122,16 @@ void display(){
     unordered_map <char, float> color = {
         {'r', rRandom},{'g', gRandom},{'b', bRandom}
     };
-
-    asteroid.setColor(color);
+    unordered_map <char,float> asteroidColor = {
+    {'r',currentAsteroidRandomColor[0]},
+    {'g',currentAsteroidRandomColor[1]},
+    {'b',currentAsteroidRandomColor[2]},
+    };
+    //cout<<"Color is"<<endl;
+    //for(auto channel : currentAsteroidRandomColor){
+        //cout<<channel<<" ";
+    //}
+    asteroid.setColor(asteroidColor);
     checkCollision();
     // cout<<asteroid.getColor()['r'];
     asteroidViewer.setCircle(asteroid);
@@ -121,9 +140,10 @@ void display(){
     if(limit <=-6){
         limit = 110;
         randX = 20 + rand()%90;
-        rRandom = generateRandomZeroToOne();
-        gRandom = generateRandomZeroToOne();
-        bRandom = generateRandomZeroToOne();
+        // rRandom = generateRandomZeroToOne();
+        // gRandom = generateRandomZeroToOne();
+        // bRandom = generateRandomZeroToOne();
+        currentAsteroidRandomColor = randomRGB();
         isCollided = false;
     }
     glutSwapBuffers();
