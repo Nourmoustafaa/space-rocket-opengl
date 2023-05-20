@@ -89,7 +89,6 @@ class Shape
             for (auto & vertex : vertices_){
                     vertex.first = newX + initValues_[i].first; // x coordinate = x-coordinate + mouseX
                     vertex.second = newY + initValues_[i].second; // y coordinate = y-coordinate + mouseY
-                    std::cout<<vertex.first<<"+"<<newX<<"="<<vertex.first+newX<<std::endl;
                     ++i;
             }
 

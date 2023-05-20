@@ -32,8 +32,8 @@
 #include <string>
 #include <sstream>
 using namespace std;
-int phyWidth= 1000;
-int phyHeight= 1000;
+int phyWidth= 500;
+int phyHeight= 500;
 int logWidth=100;
 int logHeight=100;
 int limit = 110;
@@ -49,8 +49,14 @@ RocketViewer rocketViewer(rocket);
 float rRandom = asteroid.getColor()['r'];
 float gRandom = asteroid.getColor()['g'];
 float bRandom = asteroid.getColor()['b'];
+vector <float> currentLaserBeamColor = {
+    rocket.getLaserBeam().getColor()['r'],
+    rocket.getLaserBeam().getColor()['g'],
+    rocket.getLaserBeam().getColor()['b']
+};
+int currentIndex = 0;
 void Timer(int value){
-    glutTimerFunc(15, Timer, value);
+    glutTimerFunc(50, Timer, value);
     glutPostRedisplay();
 }
 void Text(string str, int x, int y) {
@@ -84,7 +90,7 @@ void checkCollision(){
     // cout<<"laser: "<<rocketViewer.getRocket().getLaserBeam().getVertices()[0].first;
 
     if(laserBeamVertices[0].first > asteroidLeftBound && laserBeamVertices[1].first < asteroidRightBound && !isCollided){
-        cout<<"Collision!";
+        //rocketViewer.changeBeamColor(asteroid.getColor());
         isCollided = true;
         score++;
     }
@@ -123,6 +129,19 @@ void display(){
     glutSwapBuffers();
 }
 void keyboardHandler(unsigned char key, int x, int y){
+    if(key == ' '){
+        currentIndex++;
+        currentIndex = currentIndex % 3;
+        for (auto & c : currentLaserBeamColor){
+            c = 0;
+        }
+        currentLaserBeamColor[currentIndex] = 1;
+        for (auto c : currentLaserBeamColor){
+            cout<<c<<endl;
+        }
+        cout<<"Current index: "<<currentIndex<<endl;
+        rocketViewer.changeBeamColor(currentLaserBeamColor[0], currentLaserBeamColor[1], currentLaserBeamColor[2]);
+    }
 
 }
 

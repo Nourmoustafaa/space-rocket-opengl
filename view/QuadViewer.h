@@ -23,6 +23,9 @@ public:
         }
         glEnd();
     }
+    Quad getQuad(){
+        return this->quad_;
+    }
 };
 
 #endif // QUADVIEWER_H
