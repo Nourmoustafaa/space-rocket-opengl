@@ -1,5 +1,5 @@
 # Space Rocket
-This is a simple game where you control a space rocket that must avoid asteroids and shoot them down with a laser beam. 
+An upcoming simple game where you control a space rocket that must avoid asteroids and shoot them down with a laser beam. 
 The game is built in C++ using the ***OPENGL*** & ***GLUT*** library for graphics and input handling.
 
 ## Design Pattern
