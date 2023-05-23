@@ -22,11 +22,14 @@
 #include "view/CircleViewer.h"
 
 using namespace std;
-
+int GameOverflag=0;
+int countdown=25;
 int phyWidth = 500;                /**< Physical width of the window */
 int phyHeight = 500;               /**< Physical height of the window */
 int logWidth = 100;                /**< Logical width of the window */
 int logHeight = 100;               /**< Logical height of the window */
+int centerX=logWidth/2;            /**<center x of the screen */
+int centerY=logHeight/2;           /**<center y of the screen*/
 int limit = 110;                   /**< Limit for asteroid appearance */
 float mouseX;                      /**< Mouse X-coordinate */
 float randX = 20;                  /**< Random X-coordinate for asteroid appearance */
@@ -226,6 +229,65 @@ vector<float> randomRGB() {
  * @brief Display callback function
  *        Draws the game objects and updates their positions
  */
+
+ void Timer1(int value)
+{
+    countdown--;
+
+    if (countdown <= 0)
+    {
+        // Call your function here when the countdown reaches zero
+        std::cout << "Countdown reached zero!" << std::endl;
+        GameOverflag=1;
+    }
+
+    else
+    {
+        std::cout << "Countdown: " << countdown << std::endl;
+        glutTimerFunc(1000, Timer1, value);  // Call Timer again after 1 second (1000 milliseconds)
+    }
+glutPostRedisplay();
+}
+void drawGameOver(){
+ glClear( GL_COLOR_BUFFER_BIT);
+    glShadeModel(GL_SMOOTH);
+     stringstream strScore;
+     strScore << score;
+    string s1;
+  strScore >> s1;
+   generateRandomStars(0, 100, .5, 100);
+glClearColor(0.3,0,0.9,1);
+glColor3f (1.0, 1.0, 1.0);
+Text("TIME'S UP",centerX-12,centerY+15);
+Text("Score: " + s1,centerX-10,centerY+10);
+Text("PRESS F1 TO PLAY AGAIN!",centerX-24,centerY+5);
+}
+
+void  ResetGame(){
+
+   glClearColor(0.0, 0.0, 0, 1.0);
+   score=0;
+GameOverflag=0;
+
+glutPostRedisplay();
+
+}
+void RestartTimer()
+{
+  countdown= 25; // Reset the timer count to the initial value
+    glutTimerFunc(1000, Timer1, 0); // Start the timer again
+}
+
+void  specialFunc(int key, int x, int y)
+{
+if(key==GLUT_KEY_F1 ){
+  //countdown=10;// score=0;//GameOverflag=0;
+
+ResetGame();
+ RestartTimer();
+}
+glutPostRedisplay();
+}
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
     generateRandomStars(0, 100, .5, 100);
@@ -234,6 +296,11 @@ void display() {
     string s;
     ss >> s;
     Text("Score: " + s, 5, 90);
+     stringstream Timeout;
+   Timeout << countdown;
+    string s2;
+    Timeout >> s2;
+    Text("Time: " +s2 , 80, 90);
     rocketViewer.draw();
     vector<pair<float, float>> center = {make_pair(randX, limit)};
     asteroid.setVertices(center);
@@ -257,6 +324,9 @@ void display() {
         currentAsteroidRandomColor = randomRGB();
         isCollided = false;
     }
+
+    if(GameOverflag==1)drawGameOver();
+
     glutSwapBuffers();
 }
 
@@ -313,7 +383,12 @@ void init() {
  *
  * @return The exit status of the program
  */
-int main(int argc, char* argv[]) {
+
+ bool gameRunning = true;  // Game running flag
+bool gameStarted = false; // Game started flag
+
+
+ int main(int argc, char* argv[]) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(phyWidth, phyHeight);
@@ -321,8 +396,12 @@ int main(int argc, char* argv[]) {
     glutCreateWindow("Rocket Game");
     init();
     glutDisplayFunc(display);
+    glutSpecialFunc(specialFunc);
+
     glutKeyboardFunc(keyboardHandler);
     glutPassiveMotionFunc(mouseHandler);
+
+    glutTimerFunc(0, Timer1, 0);
     glutTimerFunc(50, Timer, 0);
     glutMainLoop();
     return 0;
